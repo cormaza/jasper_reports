@@ -1,0 +1,55 @@
+<?xml version="1.0"?>
+<odoo>
+	<data>
+		<record id="act_report_xml_view" model="ir.ui.view">
+			<field name="name">ir.actions.report.jasper</field>
+			<field name="model">ir.actions.report</field>
+			<field name="inherit_id" ref="base.act_report_xml_view" />
+			<field name="arch" type="xml">
+				<xpath expr="/form/sheet/child::group[position()=1]" position="after">
+					<group string="Jasper Options" attrs="{'invisible': [('report_type', '!=', 'jasper')]}">
+						<group>
+							<field name="jasper_model_id" attrs="{'required': [('report_type', '=', 'jasper')]}" />
+							<field name="jasper_output" attrs="{'required': [('report_type', '=', 'jasper')]}" />
+						</group>
+						<group>
+							<field name="report_rml" />
+							<button string="Update from attachments" name="update"
+								type="object" colspan="2" />
+						</group>
+					</group>
+				</xpath>
+				<page name="security" position="before">
+					<page string="Jasper Files" attrs="{'invisible': [('report_type', '!=', 'jasper')]}">
+						<field name="jasper_file_ids" nolabel="1">
+							<tree>
+								<field name="filename" />
+								<field name="default" />
+							</tree>
+							<form>
+								<group colspan="4" col="2">
+									<field name="file" filename="filename" string="File" />
+									<field name="filename" invisible="1" />
+									<field name="default" />
+								</group>
+							</form>
+						</field>
+					</page>
+				</page>
+			</field>
+		</record>
+
+		<record id="ir_action_report_jasper" model="ir.actions.act_window">
+			<field name="name">Jasper Reports</field>
+			<field name="type">ir.actions.act_window</field>
+			<field name="res_model">ir.actions.report</field>
+			<field name="view_type">form</field>
+			<field name="view_mode">tree,form</field>
+			<field name="context">{'default_report_type': 'jasper'}</field>
+			<field name="domain">[('report_type','=','jasper')]</field>
+		</record>
+
+		<menuitem action="ir_action_report_jasper" id="menu_ir_action_report_jasper"
+			parent="jasper_reports_menu" />
+	</data>
+</odoo>
